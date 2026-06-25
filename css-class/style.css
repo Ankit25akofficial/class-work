@@ -1,0 +1,223 @@
+/* Core Styling & Custom Properties */
+:root {
+  --bg-color: #080b11;
+  --card-bg: rgba(17, 25, 40, 0.65);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #818cf8;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Playing Cards Container - Forced Single Line Row */
+.playing-cards-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;          /* Force cards on a single line */
+  overflow-x: auto;           /* Scroll horizontally on small screens */
+  padding: 30px 10px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Custom Scrollbar for horizontal container */
+.playing-cards-container::-webkit-scrollbar {
+  height: 6px;
+}
+.playing-cards-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+/* Playing Card Base Style */
+.playing-card {
+  flex-shrink: 0;             /* Don't shrink the cards below standard size */
+  width: 90px;                /* Compact, small playing card width */
+  height: 135px;              /* Standard aspect ratio height */
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+/* Center and corner text positioning */
+.card-corner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-family: var(--font-family);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.top-left {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.bottom-right {
+  align-self: flex-end;
+  text-align: right;
+  transform: rotate(180deg);  /* Rotate bottom corner upside down */
+}
+
+/* Center suit styling - perfectly centered */
+.card-center {
+  font-size: 2.2rem;
+  font-weight: 700;
+  align-self: center;
+  margin: auto;
+  line-height: 1;
+}
+
+/* Suit Colors & Accents */
+.suit-spades, .suit-clubs {
+  color: #111827;            /* Off-black for premium look */
+}
+
+.suit-hearts, .suit-diamonds {
+  color: #ef4444;            /* Premium card-red */
+}
+
+/* Dynamic Hover Effect - slight rotation and pop up */
+.playing-card:hover {
+  transform: translateY(-16px) rotate(3deg) scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+/* Vary rotation direction of adjacent cards to look like a natural hand of cards */
+.playing-card:nth-child(even):hover {
+  transform: translateY(-16px) rotate(-3deg) scale(1.05);
+}
+
+/* Explanation Section */
+.explanation {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 40px;
+  margin-top: 40px;
+}
+
+.explanation h2 {
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.explanation-card h3 {
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.explanation-card p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.explanation-card pre {
+  background: #05070b;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.explanation-card code {
+  color: #a5b4fc;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
