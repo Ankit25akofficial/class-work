@@ -5,11 +5,14 @@ A repository to track and post my daily learnings, placement preparation, and pr
 ## Repository Structure
 
 - `day02/`: Daily JavaScript practice and basic logic coding.
+- `demo03/`:DOM method
 - `css-class/`: CSS class lessons, exercises, and styles.
 - `portfolio/`: Personal portfolio project styling and scripting.
 
 ## How to update
+
 Whenever you finish studying or coding, run these commands to update your GitHub repository:
+
 ```bash
 git add .
 git commit -m "Study: updated placement preparation files"
