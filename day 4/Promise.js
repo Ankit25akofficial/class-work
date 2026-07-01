@@ -1,4 +1,4 @@
-// A Promise is used to handle asynchronous operations. It promises to return a result later, either successfully or with an error..
+// A Promise is used to handle asynchronous operations. It promises to return a result later, either successfully or with an error....
 
 function downloadFile() {
   return new Promise((resolve) => {
