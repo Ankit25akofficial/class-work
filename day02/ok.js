@@ -46,6 +46,8 @@
 
 // outer();
 
+//inner outer
+
 function outer() {
   const outerVar = "Hey I am the outer Var";
 
