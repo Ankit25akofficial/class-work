@@ -6,6 +6,7 @@ A repository to track and post my daily learnings, placement preparation, and pr
 
 - `day02/`: Daily JavaScript practice and basic logic coding.
 - `demo03/`:DOM method
+- `day 4/`: JS assynchronous
 - `css-class/`: CSS class lessons, exercises, and styles.
 - `portfolio/`: Personal portfolio project styling and scripting.
 
