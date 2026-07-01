@@ -1,4 +1,4 @@
-// A callback is a function passed into another function as an argument, which is called (executed) after a task is completed or when a specific event occurs.
+// A callback is a function passed into another function as an argument, which is called (executed) after a task is completed or when a specific event occurs..
 
 function download(callback) {
   console.log("Downloading...");
