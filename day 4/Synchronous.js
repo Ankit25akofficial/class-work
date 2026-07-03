@@ -11,7 +11,10 @@ function task2() {
 function task3() {
   console.log("Task 3 completed");
 }
-
+function task4() {
+  console.log("Task 4 completed");
+}
 task1();
 task2();
 task3();
+task4();
