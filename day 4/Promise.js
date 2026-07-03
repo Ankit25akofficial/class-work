@@ -78,7 +78,7 @@ function getProducts() {
 function getCategory(categoryId) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let success = true; // Change to false to test reject
+      let success = true;
 
       if (success) {
         resolve({
@@ -88,39 +88,65 @@ function getCategory(categoryId) {
       } else {
         reject("Category not found");
       }
-    }, 1000);
+    }, 2000);
   });
 }
 
 function getOffers(categoryId) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let success = true; // Change
+      let success = true;
 
       if (success) {
         resolve(["10% OFF", "Free Delivery", "Extra ₹1000 Cashback"]);
       } else {
         reject("No offers available");
       }
-    }, 1000);
+    }, 1500);
   });
 }
 
 getProducts()
   .then((products) => {
     console.log("Products:", products);
-    return getCategory(products[0].categoryId);
+
+    const categoryPromise = getCategory(products[0].categoryId);
+    const offerPromise = getOffers(products[0].categoryId);
+
+    // Promise.all()
+    Promise.all([categoryPromise, offerPromise])
+      .then(([category, offers]) => {
+        console.log("\nPromise.all()");
+        console.log("Category:", category);
+        console.log("Offers:", offers);
+      })
+      .catch((err) => console.log("Promise.all Error:", err));
+
+    // Promise.allSettled()
+    Promise.allSettled([categoryPromise, offerPromise]).then((result) => {
+      console.log("\nPromise.allSettled()");
+      console.log(result);
+    });
+
+    // Promise.race()
+    Promise.race([categoryPromise, offerPromise])
+      .then((result) => {
+        console.log("\nPromise.race()");
+        console.log(result);
+      })
+      .catch((err) => console.log(err));
+
+    // Promise.any()
+    Promise.any([categoryPromise, offerPromise])
+      .then((result) => {
+        console.log("\nPromise.any()");
+        console.log(result);
+      })
+      .catch((err) => console.log(err));
   })
-  .then((category) => {
-    console.log("Category:", category);
-    return getOffers(category.id);
-  })
-  .then((offers) => {
-    console.log("Offers:", offers);
-  })
-  .catch((error) => {
-    console.log("Error:", error);
+  .catch((err) => {
+    console.log(err);
   })
   .finally(() => {
-    console.log("Finished");
+    console.log("\nFinished");
   });
