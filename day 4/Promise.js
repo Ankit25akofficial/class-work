@@ -95,7 +95,7 @@ function getCategory(categoryId) {
 function getOffers(categoryId) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let success = true; // Change to false to test reject
+      let success = true; // Change
 
       if (success) {
         resolve(["10% OFF", "Free Delivery", "Extra ₹1000 Cashback"]);
