@@ -61,7 +61,7 @@
 function getProducts() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let success = true; // Change to false to test reject
+      let success = true;
 
       if (success) {
         resolve([
