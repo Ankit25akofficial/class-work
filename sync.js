@@ -1,56 +1,111 @@
 const { execSync } = require("child_process");
-const readline = require("readline");
 
 function run(cmd) {
   try {
-    return execSync(cmd, { encoding: "utf8" }).trim();
+    return execSync(cmd, {
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
+    }).trim();
   } catch (err) {
-    console.error(`Error running command: ${cmd}`);
-    console.error(err.message);
-    process.exit(1);
+    throw new Error(err.stderr?.toString() || err.message);
   }
 }
 
-// 1. Check git status
-console.log("Checking git status...");
-const status = run("git status --porcelain");
+console.log("🔍 Checking git status...");
+
+let status;
+
+try {
+  status = execSync("git status --porcelain -z", {
+    encoding: "utf8",
+  });
+} catch (err) {
+  console.error("❌ Failed to get git status.");
+  process.exit(1);
+}
 
 if (!status) {
-  console.log("✅ No changes detected. Everything is up to date!");
+  console.log("✅ No changes detected.");
   process.exit(0);
 }
 
-console.log("\nChanges detected:\n");
-console.log(status);
+// Parse git output safely
+const entries = status.split("\0").filter(Boolean);
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+const files = [];
+
+for (let i = 0; i < entries.length; i++) {
+  const entry = entries[i];
+
+  const code = entry.slice(0, 2).trim();
+  let file = entry.slice(3);
+
+  // Handle renamed files
+  if (code.startsWith("R")) {
+    file = entries[++i];
+  }
+
+  files.push({
+    code,
+    file,
+  });
+}
+
+console.log("\n📂 Changed files:\n");
+
+files.forEach((f) => {
+  console.log(`${f.code.padEnd(2)} ${f.file}`);
 });
 
-const defaultMessage = `update: ${new Date().toLocaleDateString()}`;
+for (const { code, file } of files) {
+  let message = "Update";
 
-rl.question(
-  `\nEnter commit message (press Enter for default: "${defaultMessage}"): `,
-  (answer) => {
-    const commitMessage = answer.trim() || defaultMessage;
+  switch (code) {
+    case "A":
+    case "??":
+      message = "Add";
+      break;
 
-    console.log("\nStaging changes...");
-    run("git add .");
+    case "M":
+      message = "Update";
+      break;
 
-    console.log(`Committing changes: "${commitMessage}"...`);
-    run(`git commit -m "${commitMessage.replace(/"/g, '\\"')}"`);
+    case "D":
+      message = "Delete";
+      break;
 
-    console.log("Pushing to GitHub...");
-    try {
-      execSync("git push origin main", { stdio: "inherit" });
-      console.log("\n🎉 Successfully pushed to GitHub!");
-    } catch (err) {
-      console.error(
-        "\n❌ Failed to push. Make sure you are connected to the internet and authenticated.",
-      );
+    default:
+      if (code.startsWith("R")) {
+        message = "Rename";
+      }
+  }
+
+  console.log(`\n📄 ${file}`);
+
+  try {
+    if (code === "D") {
+      run(`git add -u "${file}"`);
+    } else {
+      run(`git add "${file}"`);
     }
 
-    rl.close();
-  },
-);
+    run(`git commit -m "${message}: ${file}"`);
+
+    console.log(`✅ ${message}: ${file}`);
+  } catch (err) {
+    console.error(`❌ Failed for ${file}`);
+    console.error(err.message);
+  }
+}
+
+console.log("\n🚀 Pushing to GitHub...");
+
+try {
+  execSync("git push origin main", {
+    stdio: "inherit",
+  });
+
+  console.log("\n🎉 Successfully pushed!");
+} catch (err) {
+  console.error("\n❌ Push failed.");
+}
