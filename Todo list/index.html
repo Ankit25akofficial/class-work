@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <title>Dynamic To-Do List</title>
+    <style>
+      .update-controller {
+        display: none;
+      }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+        color: #fff;
+        text-align: center;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .input-header {
+        margin-top: 20px;
+      }
+
+      .to-do-input {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .to-do-input input {
+        width: 60%;
+        padding: 10px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+      }
+
+      .to-do-input button {
+        padding: 10px 20px;
+        border: none;
+        background: #ffaf7b;
+        color: #fff;
+        border-radius: 25px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .to-do-input button:hover {
+        background: #d76d77;
+      }
+
+      #date {
+        font-size: 1.2rem;
+        color: #f8f9fa;
+        font-style: italic;
+      }
+
+      .to-do-list {
+        margin-top: 20px;
+        padding: 10px;
+      }
+
+      .to-do-item {
+        background: rgba(255, 255, 255, 0.2);
+        margin: 10px auto;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        transition: 0.3s;
+      }
+
+      .to-do-item:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .to-do-item button {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .to-do-item button:hover {
+        transform: scale(1.2);
+        color: #ffaf7b;
+      }
+
+      .update-controller {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>🌟 My To-Do List 🌟</h1>
+      <div class="input-header">
+        <h2><span id="date"></span></h2>
+        <div class="to-do-input">
+          <input type="text" id="item" placeholder="Enter a Task..." />
+          <button id="addTask">+</button>
+        </div>
+      </div>
+
+      <div class="to-do-list" id="taskContainer"></div>
+    </main>
+
+    <script>
+      // Display current date
+      const dateElement = document.getElementById("date");
+      const today = new Date();
+      dateElement.innerText = today.toDateString();
+
+      // Task Manager
+      const taskInput = document.getElementById("item");
+      const addTaskButton = document.getElementById("addTask");
+      const taskContainer = document.getElementById("taskContainer");
+
+      addTaskButton.addEventListener("click", () => {
+        const taskValue = taskInput.value.trim();
+        if (taskValue === "") {
+          alert("Please enter a task!");
+          return;
+        }
+
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "to-do-item";
+
+        const taskText = document.createElement("span");
+        taskText.textContent = taskValue;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        deleteButton.onclick = () => taskContainer.removeChild(taskDiv);
+
+        taskDiv.appendChild(taskText);
+        taskDiv.appendChild(deleteButton);
+        taskContainer.appendChild(taskDiv);
+
+        taskInput.value = "";
+      });
+    </script>
+  </body>
+</html>
